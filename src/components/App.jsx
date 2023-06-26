@@ -1,16 +1,95 @@
-export const App = () => {
+import { useState, useEffect } from 'react';
+import { Container } from './Phonebook.styled';
+import ContactForm from './ContactForm';
+import ContactList from './ContactList';
+import Filter from './Filter';
+import { SectionName } from './Phonebook.styled';
+import toast, { Toaster } from 'react-hot-toast';
+import { useDispatch, useSelector } from 'react-redux';
+import { update } from 'redux/filterSlice';
+
+const App = () => {
+  const dispatch = useDispatch();
+
+  const [contacts, setContacts] = useState(() => {
+    if (localStorage.getItem('contactList')) {
+      return JSON.parse(
+        localStorage.getItem('contactList'),
+      );
+    } else {
+      return [];
+    }
+  });
+  // const [filter, setFilter] = useState('');
+
+  const filterValue = useSelector(
+    state => state.filter.value,
+  );
+
+  useEffect(() => {
+    contacts &&
+      localStorage.setItem(
+        'contactList',
+        JSON.stringify(contacts),
+      );
+  }, [contacts]);
+
+  const onSubmit = contact => {
+    if (!contacts) {
+      toast.success(
+        `${contact.name} added to your contact list`,
+      );
+      return setContacts([contact]);
+    }
+    if (contacts.find(arr => arr.name === contact.name)) {
+      toast.error(
+        `${contact.name} is already in the contact list`,
+      );
+
+      return;
+    }
+    toast.success(
+      `${contact.name} added to your contact list`,
+    );
+    setContacts(prevState => {
+      return [...prevState, contact];
+    });
+  };
+
+  const handleRemoveContact = contactId => {
+    setContacts(prevState => {
+      return prevState.filter(
+        contact => contact.id !== contactId,
+      );
+    });
+    toast.success(`Successfully deleted from contact list`);
+  };
+
+  const handleChangeFilter = evt => {
+    dispatch(update(evt.target.value));
+  };
+
+  const getFilteredContacts = () => {
+    return contacts.filter(contact =>
+      contact.name
+        .toLowerCase()
+        .includes(filterValue.toLowerCase()),
+    );
+  };
   return (
-    <div
-      style={{
-        height: '100vh',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        fontSize: 40,
-        color: '#010101'
-      }}
-    >
-      React homework template
-    </div>
+    <Container>
+      <Toaster />
+      <SectionName>Phonebook</SectionName>
+      <ContactForm onSubmit={onSubmit} />
+      <h2>Contacts</h2>
+      {contacts && <Filter onChange={handleChangeFilter} />}
+      {contacts && (
+        <ContactList
+          contacts={getFilteredContacts()}
+          onRemoveContact={handleRemoveContact}
+        />
+      )}
+    </Container>
   );
 };
+export default App;

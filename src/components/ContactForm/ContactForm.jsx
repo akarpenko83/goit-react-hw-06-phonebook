@@ -5,7 +5,7 @@ import {
   Form,
   FormGroup,
   Button,
-} from './Phonebook.styled';
+} from './ContactForm.styled.jsx';
 
 export default function ContactForm(props) {
   const [name, setName] = useState('');

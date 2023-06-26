@@ -1,44 +1,24 @@
-import { useEffect } from 'react';
-import { Container } from './Phonebook.styled';
-import ContactForm from './ContactForm';
-import ContactList from './ContactList';
-import Filter from './Filter';
-import { SectionName } from './Phonebook.styled';
+import { Container, SectionName } from './App.styled';
+import ContactForm from './ContactForm/ContactForm';
+import ContactList from './ContactList/ContactList';
+import Filter from './Filter/Filter';
 import toast, { Toaster } from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
-import { update } from 'redux/filterSlice';
+import {
+  getFilterValue,
+  updateFilter,
+} from 'redux/filterSlice';
 import {
   addContact,
+  getContacts,
   removeContact,
 } from 'redux/contactSlice';
 
 const App = () => {
   const dispatch = useDispatch();
 
-  // const [contacts, setContacts] = useState(() => {
-  //   if (localStorage.getItem('contactList')) {
-  //     return JSON.parse(
-  //       localStorage.getItem('contactList'),
-  //     );
-  //   } else {
-  //     return [];
-  //   }
-  // });
-
-  const filterValue = useSelector(
-    state => state.filter.value,
-  );
-  const contacts = useSelector(
-    state => state.contacts.value,
-  );
-
-  useEffect(() => {
-    contacts &&
-      localStorage.setItem(
-        'contactList',
-        JSON.stringify(contacts),
-      );
-  }, [contacts]);
+  const filterValue = useSelector(getFilterValue);
+  const contacts = useSelector(getContacts);
 
   const onSubmit = contact => {
     if (!contacts) {
@@ -66,7 +46,7 @@ const App = () => {
   };
 
   const handleChangeFilter = evt => {
-    dispatch(update(evt.target.value));
+    dispatch(updateFilter(evt.target.value));
   };
 
   const getFilteredContacts = () => {

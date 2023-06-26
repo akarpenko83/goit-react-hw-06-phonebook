@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { DeleteButton } from './Phonebook.styled';
+import { DeleteButton } from './Contact.styled';
 
 export default function Contact({
   name,
@@ -9,7 +9,9 @@ export default function Contact({
   return (
     <>
       {name}: {number}
-      <DeleteButton type="button">Delete</DeleteButton>
+      <DeleteButton onClick={onDelete} type="button">
+        Delete
+      </DeleteButton>
     </>
   );
 }

@@ -1,10 +1,11 @@
-import Contact from './Contact';
+import Contact from '../Contact/Contact';
 import PropTypes from 'prop-types';
 
 import {
   ContactListContainer,
   ContactItem,
-} from './Phonebook.styled';
+} from './ContactList.styled.jsx';
+
 export default function ContactList({
   contacts,
   onRemoveContact,

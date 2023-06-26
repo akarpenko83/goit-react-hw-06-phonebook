@@ -8,13 +8,13 @@ export const filterSlice = createSlice({
   name: 'filter',
   initialState,
   reducers: {
-    update(state, action) {
+    updateFilter(state, action) {
       state.value = action.payload;
     },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { update } = filterSlice.actions;
+export const { updateFilter } = filterSlice.actions;
 
-// export default filterSlice.reducer;
+export const getFilterValue = state => state.filter.value;

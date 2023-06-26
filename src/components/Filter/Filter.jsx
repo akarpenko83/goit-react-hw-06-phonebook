@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { FilterContainer } from './Phonebook.styled';
+import { FilterContainer } from './Filter.styled';
 import { useSelector } from 'react-redux';
 
 export default function Filter({ onChange }) {

@@ -10,7 +10,7 @@ export default function Filter({ onChange }) {
     <FilterContainer>
       Find contact by name
       <input
-        // value={filterValue}
+        value={filterValue}
         onChange={onChange}
         type="text"
         name="name"

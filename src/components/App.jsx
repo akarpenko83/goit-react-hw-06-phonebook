@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { Container } from './Phonebook.styled';
 import ContactForm from './ContactForm';
 import ContactList from './ContactList';
@@ -7,23 +7,29 @@ import { SectionName } from './Phonebook.styled';
 import toast, { Toaster } from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
 import { update } from 'redux/filterSlice';
+import {
+  addContact,
+  removeContact,
+} from 'redux/contactSlice';
 
 const App = () => {
   const dispatch = useDispatch();
 
-  const [contacts, setContacts] = useState(() => {
-    if (localStorage.getItem('contactList')) {
-      return JSON.parse(
-        localStorage.getItem('contactList'),
-      );
-    } else {
-      return [];
-    }
-  });
-  // const [filter, setFilter] = useState('');
+  // const [contacts, setContacts] = useState(() => {
+  //   if (localStorage.getItem('contactList')) {
+  //     return JSON.parse(
+  //       localStorage.getItem('contactList'),
+  //     );
+  //   } else {
+  //     return [];
+  //   }
+  // });
 
   const filterValue = useSelector(
     state => state.filter.value,
+  );
+  const contacts = useSelector(
+    state => state.contacts.value,
   );
 
   useEffect(() => {
@@ -39,7 +45,7 @@ const App = () => {
       toast.success(
         `${contact.name} added to your contact list`,
       );
-      return setContacts([contact]);
+      dispatch(addContact(contact));
     }
     if (contacts.find(arr => arr.name === contact.name)) {
       toast.error(
@@ -51,17 +57,11 @@ const App = () => {
     toast.success(
       `${contact.name} added to your contact list`,
     );
-    setContacts(prevState => {
-      return [...prevState, contact];
-    });
+    dispatch(addContact(contact));
   };
 
   const handleRemoveContact = contactId => {
-    setContacts(prevState => {
-      return prevState.filter(
-        contact => contact.id !== contactId,
-      );
-    });
+    dispatch(removeContact(contactId));
     toast.success(`Successfully deleted from contact list`);
   };
 

@@ -24,12 +24,6 @@ export default function ContactForm(props) {
   };
 
   const onSubmit = contact => {
-    if (!contacts) {
-      toast.success(
-        `${contact.name} added to your contact list`,
-      );
-      dispatch(addContact(contact));
-    }
     if (contacts.find(arr => arr.name === contact.name)) {
       toast.error(
         `${contact.name} is already in the contact list`,

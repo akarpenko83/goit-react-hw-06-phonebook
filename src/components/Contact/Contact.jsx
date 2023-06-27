@@ -1,15 +1,25 @@
 import PropTypes from 'prop-types';
 import { DeleteButton } from './Contact.styled';
+import { useDispatch } from 'react-redux';
+import { removeContact } from 'redux/contactSlice';
+import { toast } from 'react-hot-toast';
 
 export default function Contact({
   name,
   number,
-  onDelete,
+  contactId,
 }) {
+  const dispatch = useDispatch();
+
+  const deleteContact = () => {
+    console.log(contactId);
+    dispatch(removeContact(contactId));
+    toast.success(`Successfully deleted from contact list`);
+  };
   return (
     <>
       {name}: {number}
-      <DeleteButton onClick={onDelete} type="button">
+      <DeleteButton onClick={deleteContact} type="button">
         Delete
       </DeleteButton>
     </>
@@ -18,5 +28,5 @@ export default function Contact({
 Contact.propTypes = {
   name: PropTypes.string.isRequired,
   number: PropTypes.number.isRequired,
-  onDelete: PropTypes.func.isRequired,
+  contactId: PropTypes.string.isRequired,
 };
